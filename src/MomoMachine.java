@@ -21,7 +21,12 @@ public class MomoMachine {
     {
         return new Date(date.getTime() + MILLIS_IN_A_DAY);
     }
-    /*---------------*/
+    /*---------------
+    *
+    *
+    *
+    * */
+    /* HELP FUNCTION*/
     /*reset machine after finish one*/
     private  static void resetMachine(){
         moneyInMachine = coke = pepsi = soda = bill = 0;
@@ -164,6 +169,12 @@ public class MomoMachine {
 
         System.out.println("You had " + soda + " Soda");
     }
+    /*---------------------------------------------------------------------------
+    *
+    *
+    *
+    *
+    * */
     /*This function to show machine' s item */
     private static void showItem(){
         // use for show item product
