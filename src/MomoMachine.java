@@ -14,9 +14,54 @@ public class MomoMachine {
     static Date today = new Date();
     static boolean increase = false;
 
-
-
-
+    //for testing
+    /*----------------*/
+    private static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+    private static Date getNextDate(Date date)
+    {
+        return new Date(date.getTime() + MILLIS_IN_A_DAY);
+    }
+    /*---------------*/
+    /*reset machine after finish one*/
+    private  static void resetMachine(){
+        moneyInMachine = coke = pepsi = soda = bill = 0;
+    }
+    /*reset param*/
+    private static void resetDay(Date now, boolean inc){
+        resetMachine();
+        today = now;
+        moneyPromotion = 0;
+        increase = inc;
+    }
+    /*Get day of date*/
+    private static int getDay(Date date){
+        ; // your date
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
+    /*If that is a new day check if moneyPromotion previous day is less than 50k or not to increase to 50%*/
+    private static void checkForNewDay(){
+        int tod = getDay(today);
+        Date now = new Date();
+        int moment = getDay(now);
+        // if day is different the day is the next day
+        if(moment != tod){ // if now is the next day of 'today'
+            if(moneyPromotion < 50000){
+                resetDay(now, true);
+            }
+            else {
+                resetDay(now, false);
+            }
+        }
+    }
+    // show parameter in machine
+    private static void print(){
+        System.out.println("Money in Machine = " + moneyInMachine);
+        System.out.println("Money in Promotion = " + moneyPromotion);
+        System.out.println("Today : " + today);
+        System.out.println(coke + " " + pepsi + " " + soda);
+    }
     private static void checkForPromotion(){
         if(moneyPromotion >= 50000) return;
         if(coke >= 3){
@@ -155,7 +200,7 @@ public class MomoMachine {
         System.out.println("Press 1 to change Coke\nPress 2 to change Pepsi\nPress 3 to change Soda.");
         do{
             System.out.println("Press 0 to finish your selection!\nPress -1 to exit and refund your money!");
-            currentItem();
+
             userSelect = scan.nextInt();
             if(userSelect == 0 || userSelect == -1){
                 break;
@@ -178,7 +223,7 @@ public class MomoMachine {
                 soda+=numberOfItem;
                 if(soda < 0) soda = 0;
             }
-
+            currentItem();
         }while(1==1);
         if(userSelect == -1 ) {
             // user canceling
@@ -187,7 +232,6 @@ public class MomoMachine {
         }
         releaseUserChoice();
 
-        //        return userSelect;
     }
     /* Release user's choice return 1 if user wanna change and return 0 if not*/
     private static void releaseUserChoice(){
@@ -228,7 +272,7 @@ public class MomoMachine {
 
             }else if(select == -1) {
                 backMoney();
-                System.exit(1);
+                return;
             }
         }
         else{
@@ -239,56 +283,19 @@ public class MomoMachine {
             else if(choice == 2) userSelect();
         }
     }
-    // testing the next date
-    private static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
-    private static Date getNextDate(Date date)
-    {
-        return new Date(date.getTime() + MILLIS_IN_A_DAY);
-    }
-    /*reset machine after finish one*/
-    private  static void resetMachine(){
-        moneyInMachine = coke = pepsi = soda = bill = 0;
-    }
-    /*reset param*/
-    private static void resetDay(Date now, boolean inc){
-        resetMachine();
-        today = now;
-        moneyPromotion = 0;
-        increase = inc;
-    }
-    /*Get day of date*/
-    private static int getDay(Date date){
-        ; // your date
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-        cal.setTime(date);
-        return cal.get(Calendar.DAY_OF_MONTH);
-    }
-    /*If that is a new day check if moneyPromotion previous day is less than 50k or not to increase to 50%*/
-    private static void checkForNewDay(){
-        int tod = getDay(today);
-        Date now = new Date();
-        int moment = getDay(now);
-        // if day is different the day is the next day
-        if(moment != tod){ // if now is the next day of 'today'
-            if(moneyPromotion < 50000){
-                resetDay(now, true);
-            }
-            else {
-                resetDay(now, false);
-            }
-        }
-    }
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-//        System.out.println(today);
-//        System.out.println(getNextDate(today).after(today));
+        System.out.println(today);
+        // Do not turn off machine :))
         while(true){
+
             System.out.println("Press Any Key To Continue...");
             new java.util.Scanner(System.in).nextLine();
+            //print(); //uncomment to check after a transaction or canceling
             checkForNewDay();
             showItem();// show item
-            userMoney(false); // user input money -> select -> purchase -> exit
-
+            userMoney(false);
         }
 
     }
